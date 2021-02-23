@@ -1,10 +1,5 @@
 
-util.AddNetworkString("bSecure.ChatPrint")
-function bSecure.BroadcastChat( strText )
-    net.Start("bSecure.ChatPrint")
-        net.WriteString(strText)
-    net.Broadcast()
-end
+-- Utility functions
 
 function bSecure.FetchAdmins( bSuperAdminOnly )
     local returned = {}
@@ -21,9 +16,23 @@ function bSecure.FetchAdmins( bSuperAdminOnly )
     return returned
 end
 
+function bSecure.FormatIP( IP )
+    return IP:match("([%d%.]+)") or "error"
+end
+
+-- Chat printing
+
+util.AddNetworkString("bSecure.ChatPrint")
+function bSecure.BroadcastChat( strText )
+    net.Start("bSecure.ChatPrint")
+        net.WriteString(strText)
+    net.Broadcast()
+end
+
 function bSecure.BroadcastAdminChat( strText, bSuperAdminOnly )
     local tRecipients = (bSuperAdminOnly and bSecure.FetchAdmins(true)) or bSecure.FetchAdmins() or {}
     net.Start("bSecure.ChatPrint")
         net.WriteString(strText)
     net.Send(tRecipients)
 end
+
