@@ -1,16 +1,16 @@
-bSecure.VPN.APIKey = "" -- GET FROM https://ipqualityscore.com
-
-function bSecure.FormatIP( IPAddress )
-    return IPAddress:match("[%d.%d]+") or "error"
-end
 
 function bSecure.VPN.FormatURL( IPAddress )
-    return ("https://ipqualityscore.com/api/json/ip/%s/%s"):format( bSecure.VPN.APIKey, IPAddress )
+    return ("https://ipqualityscore.com/api/json/ip/%s/%s"):format( bSecure.VPN.APIKey or "error", IPAddress )
+end
+
+local PLAYER_METATABLE = debug.getregistry().Player
+local function isplayer( Ent )
+    return getmetatable(Ent) == PLAYER_METATABLE
 end
 
 function bSecure.CheckVPN( Data )
     local IPAddress
-    if is(Data) then
+    if isplayer(Data) then
         IPAddress = bSecure.FormatIP(Data:IPAddress())
     else
         IPAddress = bSecure.FormatIP(Data)
@@ -24,14 +24,22 @@ function bSecure.CheckVPN( Data )
         end
         if tData.vpn or tData.tor or tData.proxy or tData.active_vpn or tData.active_proxy then
             hook.Run("bSecure.OnVPNDetected", pPlayer, IPAddress)
-            print("Detected a VPN. IP: ", IP, IPAddress)
+            print("Detected a VPN. IP: ", IP)
+            if isplayer(Data) then
+                if bSecure.VPN.Config.ShouldAlertAdmins then
+                    bSecure.BroadcastAdminChat(Data:Nick() .. "["..Data:SteamID().."] has connected with a vpn.", bSecure.VPN.Config.AlertOnlySuperadmins)
+                end
+                if bSecure.VPN.Config.ShouldKick then
+                    Data:Kick( bSecure.VPN.Config.KickReason )
+                end
+            end
             return
         end
     end)
 end
 
 function bSecure.CheckPlayerVPN( pPlayer )
-    return bSecure.CheckVPN( pPlayer:IPAddress(), pPlayer )
+    return bSecure.CheckVPN( pPlayer:IPAddress() )
 end
 
 hook.Add("PlayerInitialSpawn", "bSecure.CheckVPN", function( pPlayer )

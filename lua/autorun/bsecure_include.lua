@@ -11,9 +11,9 @@ concommand.Add("bsecure", function(ply,cmd,args)
     end
 end)
 
-local prefixCol = Color(160,200,80)
+local prefixCol = Color(30,200,100)
 function bSecure.Print(...)
-    MsgC(prefixCol,"bSecure | ",color_white,...,"\n")
+    MsgC(prefixCol,"[bSecure] ",color_white,...,"\n")
 end
 
 function bSecure.IncludeModules()
@@ -48,5 +48,12 @@ function bSecure.IncludeModules()
     end
 end
 
+if SERVER then 
+    include("bsecure/bsecure_server.lua")
+    AddCSLuaFile("bsecure/bsecure_client.lua") 
+end
+if CLIENT then 
+    include("bsecure/bsecure_client.lua")
+end
 
 bSecure.IncludeModules()
