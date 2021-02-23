@@ -20,6 +20,49 @@ function bSecure.FormatIP( IP )
     return IP:match("([%d%.]+)") or "error"
 end
 
+local PLAYER_METATABLE = debug.getregistry().Player
+function bSecure.isPlayer( Ent ) 
+    return getmetatable(Ent) == PLAYER_METATABLE
+end
+
+local floor = math.floor
+local function ConvertTime( iSeconds )
+    local seconds = floor((iSeconds%60))
+    local minutes = floor((iSeconds%3600)/60)
+    local hours = floor((iSeconds%86400)/3600)
+    local days = floor((iSeconds/86400)%365)
+    local months = floor((iSeconds/2.628e+6)%12)
+    local years = floor((iSeconds/86400)/365)
+    return {seconds=seconds,minutes=minutes,hours=hours,days=days,months=months,years=years}
+end
+
+local function FormatTime( tDate )
+    local returned = ""
+    if tDate.years and (tDate.years > 0) then
+        returned = returned .. tDate.years.."years "
+    end
+    if tDate.months and (tDate.months > 0 or tDate.years > 0) then
+        returned = returned .. tDate.months .. "months " 
+    end
+    if tDate.days and (tDate.days > 0 or tDate.months > 0) then
+        returned = returned .. tDate.days .. "days " 
+    end
+    if tDate.hours and (tDate.hours > 0 or tDate.days > 0) then
+        returned = returned .. tDate.hours .. "hours " 
+    end
+    if tDate.minutes then
+        returned = returned .. tDate.minutes .. "minutes "
+    end
+    if tDate.seconds then
+        returned = returned .. tDate.seconds .. "seconds" 
+    end
+    return returned
+end
+
+function bSecure.TimeSince( iSeconds )
+    return FormatTime(ConvertTime(os.time()-iSeconds))
+end
+
 -- Chat printing
 
 util.AddNetworkString("bSecure.ChatPrint")
@@ -36,3 +79,12 @@ function bSecure.BroadcastAdminChat( strText, bSuperAdminOnly )
     net.Send(tRecipients)
 end
 
+-- Extra printing
+
+function bSecure.PrintDetection( ... )
+    bSecure.Print(Color(255,30,60),"[Detection] ",color_white,...)
+end
+
+function bSecure.PrintError( ... )
+    bSecure.Print(Color(255,255,0),"[Error] ",color_white,...)
+end

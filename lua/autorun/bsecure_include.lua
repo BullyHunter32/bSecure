@@ -13,7 +13,7 @@ end)
 
 local prefixCol = Color(30,200,100)
 function bSecure.Print(...)
-    MsgC(prefixCol,"[bSecure] ",color_white,...,"\n")
+    MsgC(prefixCol,"[bSecure] ",color_white,...) print()
 end
 
 function bSecure.IncludeModules()

@@ -1,5 +1,6 @@
 
 hook.Add("PlayerInitialSpawn", "bSecure.CheckFamilyShare", function( pPlayer )
+    if pPlayer:IsBot() then return end
     local serverguard_bans,ulib_bans
     local OwnerSteamID = pPlayer:OwnerSteamID64()
     if OwnerSteamID == pPlayer:SteamID64() then return end
