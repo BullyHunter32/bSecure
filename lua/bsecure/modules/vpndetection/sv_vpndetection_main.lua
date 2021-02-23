@@ -10,10 +10,10 @@ end
 
 function bSecure.CheckVPN( Data )
     local IPAddress
-    if is(pPlayer) then
+    if is(Data) then
         IPAddress = bSecure.FormatIP(Data:IPAddress())
     else
-        IPAddress = bSecure.FormatIP(Datta)
+        IPAddress = bSecure.FormatIP(Data)
     end
     http.Fetch(bSecure.VPN.FormatURL(IPAddress), function(body)
         local tData = util.JSONToTable( body )
@@ -24,7 +24,7 @@ function bSecure.CheckVPN( Data )
         end
         if tData.vpn or tData.tor or tData.proxy or tData.active_vpn or tData.active_proxy then
             hook.Run("bSecure.OnVPNDetected", pPlayer, IPAddress)
-            print("Detected a VPN. IP: ", IP)
+            print("Detected a VPN. IP: ", IP, IPAddress)
             return
         end
     end)
