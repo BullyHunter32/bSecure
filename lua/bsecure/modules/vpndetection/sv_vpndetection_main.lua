@@ -17,10 +17,8 @@ function bSecure.CheckVPN( Data )
     end
     http.Fetch(bSecure.VPN.FormatURL(IPAddress), function(body)
         local tData = util.JSONToTable( body )
-        print( tData, body )
-        if istable(tData) then PrintTable(tData) end
         if not tData.success then
-            return print("Failed to lookup data. IP: ", IP , "\tError: ", tData.message)
+            return print("Failed to lookup data. IP: ", IPAddress , "\n\t", tData.message)
         end
         if tData.vpn or tData.tor or tData.proxy or tData.active_vpn or tData.active_proxy then
             hook.Run("bSecure.OnVPNDetected", pPlayer, IPAddress)
