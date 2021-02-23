@@ -1,6 +1,6 @@
 
 function bSecure.VPN.FormatURL( IPAddress )
-    return ("https://ipqualityscore.com/api/json/ip/%s/%s"):format( bSecure.VPN.APIKey or "error", IPAddress )
+    return ("https://ipqualityscore.com/api/json/ip/%s/%s"):format( bSecure.VPN.Config.APIKey or "error", IPAddress )
 end
 
 local PLAYER_METATABLE = debug.getregistry().Player
