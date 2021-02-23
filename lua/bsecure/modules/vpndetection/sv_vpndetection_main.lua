@@ -1,4 +1,4 @@
-bSecure.VPN.APIKey = "h2hfIXk9TYzQ8VG2gZm1ddDlzXeFEKqt"
+bSecure.VPN.APIKey = "" -- GET FROM https://ipqualityscore.com
 
 function bSecure.FormatIP( IPAddress )
     return IPAddress:match("[%d.%d]+") or "error"
