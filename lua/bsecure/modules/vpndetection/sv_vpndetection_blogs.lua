@@ -9,6 +9,7 @@ hook.Add("bLogs_FullyLoaded", "bSecure.VPNModule", function()
 
 
     hook.Add("bSecure.OnVPNDetected", "bSecure.VPN.bLog", function(pPlayer, IP)
+        if not pPlayer then return end
         bSecure.VPN.bLogs:Log( bLogs:FormatPlayer(pPlayer).." has connected with a VPN @ ".. IP )
     end)
 end)

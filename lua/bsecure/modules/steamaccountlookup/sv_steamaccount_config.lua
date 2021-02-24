@@ -2,6 +2,7 @@ bSecure.Steam.Config = {}
 
 --[[-------------------------------------
     Name: API Key
+    Default: ""
 
     Description: Get your API key from
     https://steamcommunity.com/dev. It's
@@ -12,6 +13,7 @@ bSecure.Steam.Config["APIKey"] = ""
 
 --[[-------------------------------------
     Name: Alert admins - New account
+    Default: true
 
     Description: Whether or not admins
     should be alerted in chat when
@@ -22,6 +24,7 @@ bSecure.Steam.Config["AlertAdminsYoung"] = true
 
 --[[-------------------------------------
     Name: Alert admins - Un-setup account
+    Default: true
 
     Description: Whether or not admins
     should be alerted when someone joins
@@ -30,5 +33,17 @@ bSecure.Steam.Config["AlertAdminsYoung"] = true
 --]]-------------------------------------
 bSecure.Steam.Config["AlertAdminsUnSetup"] = true
 
+--[[-------------------------------------
+    Name: Estimate creation time
+    Default: false
 
+    Description: Whether or not the 
+    player's creation time should be
+    estimated if they're a private account.
 
+    Disclaimer: This is more expensive as
+    it downloads data for 2 other players
+    for every private account on your
+    server.
+--]]-------------------------------------
+bSecure.Steam.Config["EstimateCreationTime"] = false
