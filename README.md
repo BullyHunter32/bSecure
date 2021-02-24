@@ -5,6 +5,7 @@ The idea behind bSecure was to be a free, open source addon revolved around the 
 The features this currently has at the time of writing this are the following:
 - VPN Detection
 - Family share alt detection
-- Recently made steam accounts (within 1 week)
+- Detects recently made steam accounts (within 1 week)
+- Detects un-setup community profiles
 
 ... and there are more to come :)
