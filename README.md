@@ -7,5 +7,8 @@ The features this currently has at the time of writing this are the following:
 - Family share alt detection
 - Detects recently made steam accounts (within 1 week)
 - Detects un-setup community profiles
+- Detects detoured screengrab functions
+- Notifies superadmins when cslua is enabled just in case they are unaware
+- Detects and prevents meth's chat spamming
 
 ... and there are more to come :)
