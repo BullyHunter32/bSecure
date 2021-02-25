@@ -20,7 +20,6 @@ end)
 bSecure.VPN.AddWhitelist = function(SteamID, adminName, adminSteamID)
     if sql.Query(("SELECT * FROM bsecure_vpn_whitelist WHERE steamid64='%s'"):format(SteamID)) then
         bSecure.Print(SteamID .. " is already whitelisted!")
-
         return
     end
 
@@ -36,24 +35,28 @@ bSecure.VPN.RemoveWhitelist = function(SteamID, adminName, adminSteamID)
 end
 
 bSecure.ConCommandAdd("addvpnwhitelist", function(pPlayer, CMD, tArgs)
-    if not pPlayer:IsSuperAdmin() then return end
-
-    if not tArgs[2] or tArgs[2]:match("%a") or string.sub(string.lower(tArgs[2]), 1, 5) == "steam" then
-        pPlayer:ChatPrint("You must provide a SteamID64!")
-
-        return
+    local adminName,adminSteamID
+    if not pPlayer == NULL then
+        if not pPlayer:IsSuperAdmin() then return end
+        if not tArgs[2] or tArgs[2]:match("%a") or string.sub(string.lower(tArgs[2]), 1, 5) == "steam" then
+            bSecure.ChatPrint(pPlayer,"You must provide a SteamID64!")
+            return
+        end
+        adminName = pPlayer.SteamName and pPlayer:SteamName() or pPlayer:Nick()
+        adminSteamID = pPlayer:SteamID64()
+    else
+        adminName = "Console",
+        adminSteamID = "Console"
     end
-
-    bSecure.VPN.AddWhitelist(tArgs[2], pPlayer.SteamName and pPlayer:SteamName() or pPlayer:Nick(), pPlayer:SteamID64())
+    bSecure.VPN.AddWhitelist(tArgs[2], adminName, adminSteamID)
 end)
 
 bSecure.ConCommandAdd("removevpnwhitelist", function(pPlayer, CMD, tArgs)
-    if not pPlayer:IsSuperAdmin() then return end
+    if not pPlayer == NULL and not pPlayer:IsSuperAdmin() then return end
 
     if not tArgs[2] or tArgs[2]:match("%a") or string.sub(string.lower(tArgs[2]), 1, 5) == "steam" then
-        pPlayer:ChatPrint("You must provide a SteamID64!")
-
-        return
+        if pPlayer ~= NULL then bSecure.ChatPrint(pPlayer,"You must provide a SteamID64!") return end
+        if pPlayer == NULL then bSecure.PrintError("You must provide a SteamID64!") return end
     end
 
     bSecure.VPN.RemoveWhitelist(tArgs[2], pPlayer.SteamName and pPlayer:SteamName() or pPlayer:Nick(), pPlayer:SteamID64())
