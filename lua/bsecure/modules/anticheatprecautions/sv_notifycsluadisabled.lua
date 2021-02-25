@@ -2,7 +2,7 @@
 hook.Add("PlayerInitialSpawn", "bSecure.NotifyCSLuaEnabled", function(pPlayer)
     timer.Simple(6,function()
         if pPlayer:IsSuperAdmin() and GetConVar("sv_allowcslua"):GetInt() == 1 and not game.SinglePlayer() and not pPlayer:IPAddress() == "loopback" then
-            bSecure.ChatNotify(pPlayer, "sv_allowcslua is enabled! This allows players to run scripts such as hacks or exploits on your server.")
+            bSecure.ChatPrint(pPlayer, "sv_allowcslua is enabled! This allows players to run scripts such as hacks or exploits on your server.")
         else
             hook.Remove("PlayerInitialSpawn", "bSecure.NotifyCSLuaEnabled")
         end
