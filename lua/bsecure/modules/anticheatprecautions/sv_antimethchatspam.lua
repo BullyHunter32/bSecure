@@ -14,12 +14,20 @@ local flaggedStrings = bSecure.ArrayToList({
 
 hook.Add("PlayerSay", "bSecure.CheckMethamphetaminePhrase", function(pPlayer, strText)
     if flaggedStrings[strText] then
-        bSecure.PrintDetection(("Detected malicious message by %s[%s]: \"%s\""):format(
-            pPlayer.SteamName and pPlayer:SteamName() or pPlayer:Nick(),
-            pPlayer:SteamID64(),
-            strText
-        ))
+        -- If people get banned after doing it once, there will 100% be trolling
+        pPlayer.iFlaggedMessages = pPlayer.iFlaggedMessages
+
+        if pPlayer.iFlaggedMessages >= 4 then
+            bSecure.PrintDetection(("Detected malicious message by %s[%s]: \"%s\""):format(
+                pPlayer.SteamName and pPlayer:SteamName() or pPlayer:Nick(),
+                pPlayer:SteamID64(),
+                strText
+            ))
+            bSecure.BanPlayer(pPlayer, "Malicious message detected", 0)
+        end
+       
+        pPlayer.iFlaggedMessages = pPlayer.iFlaggedMessages + 1
         hook.Run("bSecure.MaliciousChatSent", pPlayer, strText)
-        bSecure.BanPlayer(pPlayer, "Malicious message detected", 0)
+        return ""
     end
 end)
