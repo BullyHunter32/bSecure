@@ -30,5 +30,7 @@ hook.Add("PlayerSay", "bSecure.CheckMethamphetaminePhrase", function(pPlayer, st
         
         hook.Run("bSecure.MaliciousChatSent", pPlayer, strText)
         pPlayer.nextRefresh = CurTime() + 5
+
+        return ""
     end
 end)
