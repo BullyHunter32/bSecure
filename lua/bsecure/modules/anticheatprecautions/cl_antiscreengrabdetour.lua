@@ -8,7 +8,7 @@ local timer_Simple = timer.Simple
 local function checkScreengrabDetours()
     if  render.Capture ~= render_Capture or
         render.CapturePixels ~= render_CapturePixels or
-        util.Compress ~= util.Compress then
+        util.Compress ~= util_Compress then
 
         net_Start("bSecure.DetouredScreengrabDetected")
         net_SendToServer()
