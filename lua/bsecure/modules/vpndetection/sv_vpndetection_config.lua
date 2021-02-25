@@ -8,7 +8,7 @@ bSecure.VPN.Config = {}
     is used to check whether or not
     someone is using a VPN.
 --]]-------------------------------------
-bSecure.VPN.Config["APIKey"] = "iE9qB7oG3vC7uL6rY8jE4gZ5tS1kB8gH"
+bSecure.VPN.Config["APIKey"] = ""
 
 --[[-------------------------------------
     Name: Should Alert Admins
