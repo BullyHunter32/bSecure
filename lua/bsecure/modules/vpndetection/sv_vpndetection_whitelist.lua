@@ -45,7 +45,7 @@ bSecure.ConCommandAdd("addvpnwhitelist", function(pPlayer, CMD, tArgs)
         adminName = pPlayer.SteamName and pPlayer:SteamName() or pPlayer:Nick()
         adminSteamID = pPlayer:SteamID64()
     else
-        adminName = "Console",
+        adminName = "Console"
         adminSteamID = "Console"
     end
     bSecure.VPN.AddWhitelist(tArgs[2], adminName, adminSteamID)
