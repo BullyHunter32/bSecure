@@ -20,7 +20,7 @@ bSecure.VPN.Config["APIKey"] = ""
     1 - ipqualityscore.com
     2 - 
 --]]-------------------------------------
-bSecure.VPN.Config["PreferredService"] = 1
+bSecure.VPN.Config["PreferredService"] = 1 -- does jack shit rn, this was a wip that i forgot about
 
 
 --[[-------------------------------------
