@@ -16,13 +16,13 @@ function bSecure.FetchAdmins(bSuperAdminOnly)
     return returned
 end
 
-function bSecure.FormatIP(IP)
+function bSecure.FormatIP(IP) -- Removes the port from an IP Address: 1.2.3.4:2015 -> 1.2.3.4
     return IP:match("([%d%.]+)") or "error"
 end
 
 local PLAYER_METATABLE = debug.getregistry().Player
 
-function bSecure.isPlayer(Ent)
+function bSecure.isPlayer(Ent) -- When is this going to be added to gmod
     return getmetatable(Ent) == PLAYER_METATABLE
 end
 
@@ -80,19 +80,33 @@ function bSecure.TimeSince(iSeconds)
     return FormatTime(ConvertTime(os.time() - iSeconds))
 end
 
-function bSecure.BanPlayer(pPlayer, strReason, iDuration)
-    iDuration = iDuration or ""
-    strReason = strReason or "No reason."
-    if serverguard then
-        return serverguard:BanPlayer(nil, pPlayer, iDuration, "bSecure - "..strReason, true, false)
-    elseif ULib then
-        return ULib.Ban(pPlayer, iDuration, strReason)
-    else
-        return pPlayer:Ban(iDuration,true)
-    end
+function bSecure.FormatPlayer(pPlayer)
+    return pPlayer:Nick() .. "["..pPlayer:SteamID64().."]"
 end
 
-function bSecure.ArrayToList( tTable )
+local ULib_Ban = ULib and ULib.Ban or nil
+if ULib and ULib.Ban then
+    function ULib.Ban(ply, time, reason, admin) -- Detour for anti alt comapability
+        hook.Run("bSecure.PreULibBan", ply, time, reason, admin)
+        return ULib_Ban(ply, time, reason, admin)
+    end 
+end
+
+function bSecure.BanPlayer(pPlayer, strReason, iDuration) -- Bans a player
+    iDuration = iDuration or ""
+    strReason = strReason or "No reason."
+    hook.Run("bSecure.PrePlayerBan", pPlayer, strReason, iDuration)
+    if serverguard then
+        serverguard:BanPlayer(nil, pPlayer, iDuration, "bSecure - "..strReason, true, false)
+    elseif ULib then
+        ULib.Ban(pPlayer, iDuration, strReason)
+    else
+        pPlayer:Ban(iDuration,true)
+    end
+    hook.Run("bSecure.PostPlayerBan", pPlayer, strReason, iDuration)
+end
+
+function bSecure.ArrayToList(tTable) -- Changes the value for every key to true
     local returned = {}
     for k,v in ipairs(tTable) do
         returned[v] = true
@@ -102,30 +116,47 @@ end
 
 -- Chat printing
 util.AddNetworkString("bSecure.ChatPrint")
-function bSecure.BroadcastChat(strText)
+function bSecure.BroadcastChat(strText) -- Send a message into everyones chat
     net.Start("bSecure.ChatPrint")
     net.WriteString(strText)
     net.Broadcast()
 end
 
-function bSecure.BroadcastAdminChat(strText, bSuperAdminOnly)
-    local tRecipients = (bSuperAdminOnly and bSecure.FetchAdmins(true)) or bSecure.FetchAdmins() or {}
+function bSecure.BroadcastAdminChat(strText, bSuperAdminOnly) -- Send a message into every admin's chat
+    local tRecipients = bSecure.FetchAdmins(bSuperAdminOnly)
     net.Start("bSecure.ChatPrint")
     net.WriteString(strText)
     net.Send(tRecipients)
 end
 
-function bSecure.ChatPrint(pPlayer, strText)
+function bSecure.ChatPrint(pPlayer, strText) -- Send a message into a specific persons chat
     net.Start("bSecure.ChatPrint")
     net.WriteString(strText)
     net.Send(pPlayer)
 end
 
+util.AddNetworkString("bSecure.NotificationAdd")
+function bSecure.CreateNotification(pPlayer, strText) -- Creates a popup notification on the client
+    net.Start("bSecure.NotificationAdd")
+    net.WriteString(strText)
+    net.Send(pPlayer)
+end
+
+util.AddNetworkString("bSecure.AlertAdmins")
+function bSecure.AlertAdmins(strText, bSuperAdminOnly) -- Notifies admins, how they're notified is configured by the client
+    local tRecipients = bSecure.FetchAdmins(bSuperAdminOnly)
+    net.Start("bSecure.AlertAdmins")
+    net.WriteString(strText)
+    net.Send(tRecipients)
+end
+
 -- Extra printing
-function bSecure.PrintDetection(...)
-    bSecure.Print(Color(255, 30, 60), "[Detection] ", color_white, ...)
+function bSecure.PrintDetection(...) 
+    local detection = "["..bSecure:GetPhrase("detection").."] "
+    bSecure.Print(Color(255, 30, 60), detection, color_white, ...)
 end
 
 function bSecure.PrintError(...)
-    bSecure.Print(Color(255, 255, 0), "[Error] ", color_white, ...)
+    local error = "["..bSecure:GetPhrase("error").."] "
+    bSecure.Print(Color(255, 255, 0), error, color_white, ...)
 end

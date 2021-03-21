@@ -20,25 +20,25 @@ function bSecure.CheckVPN(Data)
             hook.Run("bSecure.OnVPNDetected", pPlayer, IPAddress)
 
             if bSecure.isPlayer(Data) then
-                bSecure.PrintDetection(Data:Nick() .. "[" .. Data:SteamID() .. "] has connected with a vpn!")
+                bSecure.PrintDetection(bSecure:GetPhrase("player_connected_vpn", {["player_name"] = bSecure.FormatPlayer(Data)}))
 
                 if bSecure.VPN.Config.ShouldAlertAdmins then
-                    bSecure.BroadcastAdminChat(Data:Nick() .. "[" .. Data:SteamID() .. "] has connected with a vpn.", bSecure.VPN.Config.AlertOnlySuperadmins)
+                    bSecure.AlertAdmins(bSecure:GetPhrase("player_connected_vpn", {["player_name"] = bSecure.FormatPlayer(Data)}), bSecure.VPN.Config.AlertOnlySuperadmins)
                 end
 
                 if bSecure.VPN.Config.ShouldKick then
                     Data:Kick(bSecure.VPN.Config.KickReason)
                 end
             else
-                bSecure.PrintDetection(IPAddress, " is a vpn.")
+                bSecure.PrintDetection(bSecure:GetPhrase("detected_ip_vpn", {["ip_address"] = IPAddress}))
             end
 
             return
         else
             if bSecure.isPlayer(Data) then
-                bSecure.Print(Data:Nick() .. "[" .. Data:SteamID() .. "] is not using a VPN.", bSecure.VPN.Config.AlertOnlySuperadmins)
+                bSecure.Print(bSecure:GetPhrase("player_connected_no_vpn", {["player_name"] = bSecure.FormatPlayer(Data)}))
             else
-                bSecure.Print(Data .. " is not a vpn.")
+                bSecure.Print(bSecure:GetPhrase("player_connected_no_vpn", {["ip_address"] = bSecure.FormatPlayer(Data)}), bSecure.VPN.Config.AlertOnlySuperadmins)
             end
         end
     end)
@@ -49,10 +49,10 @@ function bSecure.CheckPlayerVPN(pPlayer)
 end
 
 hook.Add("PlayerInitialSpawn", "bSecure.CheckVPN", function(pPlayer)
-    if game.SinglePlayer() or pPlayer:IsBot() or pPlayer:IPAddress() == "loopback" then return end
+    if game.SinglePlayer() or pPlayer:IsBot() or pPlayer:IPAddress() == "loopback" then return end -- checks whether or not the game is P2P or singleplayer
     local val = hook.Run("bSecure.ShouldCheckVPN", pPlayer)
 
-    if val == nil or val == true then
+    if val == nil or val == true then -- checks whether or not a hook is returning false, otherwise it will run
         bSecure.Print("checking " .. pPlayer:Nick() .. "[" .. pPlayer:SteamID() .. "] for a vpn")
         bSecure.CheckPlayerVPN(pPlayer)
     end

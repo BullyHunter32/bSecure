@@ -1,1 +1,3 @@
-bSecure.VPN = {}
+bSecure.VPN = {
+    Whitelist = {}
+}

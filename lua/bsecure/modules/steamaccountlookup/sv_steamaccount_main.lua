@@ -83,11 +83,11 @@ end
 
 -- shouldBroadcast is false by default, allows for rcon using n what not without admins getting spammed
 function bSecure.Steam.ScanData(tData, shouldBroadcast)
-    print("SCANNING DATA ", tData)
+    -- print("SCANNING DATA ", tData)
 
-    if istable(tData) then
-        PrintTable(tData)
-    end
+    -- if istable(tData) then
+    --     PrintTable(tData)
+    -- end
 
     if not tData then return end
 
@@ -98,7 +98,7 @@ function bSecure.Steam.ScanData(tData, shouldBroadcast)
 
     if tData.profilestate == 0 then
         bSecure.PrintDetection(tData.personaname .. " has not set up their community profile.")
-
+        hook.Run("bSecure.UnsetupAccountDetected", tData)
         if bSecure.Steam.Config["AlertAdminsUnSetup"] and shouldBroadcast then
             bSecure.BroadcastAdminChat(tData.personaname .. " has not set up their community profile.")
         end
@@ -112,7 +112,7 @@ function bSecure.Steam.ScanData(tData, shouldBroadcast)
         bSecure.PrintDetection(tData.personaname .. "'s account is younger than a week. (" .. strAge .. " old)")
 
         if bSecure.Steam.Config["AlertAdminsYoung"] and shouldBroadcast then
-            bSecure.BroadcastAdminChat(tData.personaname .. "'s account is younger than a week. (" .. strAge .. " old)")
+            bSecure.AlertAdmins(tData.personaname .. "'s account is younger than a week. (" .. strAge .. " old)")
         end
 
         hook.Run("bSecure.YoungAccountDetected", tData, tData.personaname, strAge, tData.timecreated)

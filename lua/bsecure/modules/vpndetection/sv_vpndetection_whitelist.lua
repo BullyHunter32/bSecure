@@ -8,13 +8,13 @@ function bSecure.VPN.RefreshWhitelists()
         whitelists[v.steamid64] = true
     end
 
-    bSecure.VPN.Whitelists = whitelists
+    bSecure.VPN.Whitelist = whitelists
 end
 
 bSecure.VPN.RefreshWhitelists()
 
 hook.Add("bSecure.ShouldCheckVPN", "bSecure.Whitelist", function(pPlayer)
-    if bSecure.VPN.Whitelists[pPlayer:SteamID64()] then return false end
+    if bSecure.VPN.Whitelist[pPlayer:SteamID64()] then return false end
 end)
 
 bSecure.VPN.AddWhitelist = function(SteamID, adminName, adminSteamID)
@@ -25,13 +25,27 @@ bSecure.VPN.AddWhitelist = function(SteamID, adminName, adminSteamID)
 
     sql.Query(("INSERT INTO bsecure_vpn_whitelist( steamid64, admin_name, admin_steamid ) VALUES( '%s', %s, '%s' )"):format(SteamID, sql.SQLStr(adminName), adminSteamID))
     bSecure.Print(adminName .. "[" .. adminSteamID .. "] has whitelisted " .. SteamID .. " to the vpn detector!")
-    bSecure.VPN.Whitelists[SteamID] = true
+    bSecure.VPN.Whitelist[SteamID] = true
+    
+    local tRecipients = bSecure.FetchAdmins(true)
+    net.Start("bSecure.VPN.Whitelist")
+    for k,v in pairs(bSecure.VPN.Whitelist) do
+        net.WriteString(k)
+    end
+    net.Send(tRecipients)
 end
 
 bSecure.VPN.RemoveWhitelist = function(SteamID, adminName, adminSteamID)
     sql.Query(("DELETE FROM bsecure_vpn_whitelist WHERE steamid64='%s'"):format(SteamID))
     bSecure.Print(adminName .. "[" .. adminSteamID .. "] has removed " .. SteamID .. " from the vpn detector whitelist!")
-    bSecure.VPN.Whitelists[SteamID] = true
+    bSecure.VPN.Whitelist[SteamID] = nil
+
+    local tRecipients = bSecure.FetchAdmins(true)
+    net.Start("bSecure.VPN.Whitelist")
+    for k,v in pairs(bSecure.VPN.Whitelist) do
+        net.WriteString(k)
+    end
+    net.Send(tRecipients)
 end
 
 bSecure.ConCommandAdd("addvpnwhitelist", function(pPlayer, CMD, tArgs)
@@ -45,6 +59,10 @@ bSecure.ConCommandAdd("addvpnwhitelist", function(pPlayer, CMD, tArgs)
         adminName = pPlayer.SteamName and pPlayer:SteamName() or pPlayer:Nick()
         adminSteamID = pPlayer:SteamID64()
     else
+        if not tArgs[2] or tArgs[2]:match("%a") or string.sub(string.lower(tArgs[2]), 1, 5) == "steam" then
+            bSecure.PrintError("You must provide a SteamID64!")
+            return
+        end
         adminName = "Console"
         adminSteamID = "Console"
     end
@@ -60,4 +78,16 @@ bSecure.ConCommandAdd("removevpnwhitelist", function(pPlayer, CMD, tArgs)
     end
 
     bSecure.VPN.RemoveWhitelist(tArgs[2], pPlayer.SteamName and pPlayer:SteamName() or pPlayer:Nick(), pPlayer:SteamID64())
+end)
+
+util.AddNetworkString("bSecure.VPN.Whitelist")
+hook.Add("PlayerInitialSpawn", "bSecure.SendWhitelist", function(pPlayer)
+    if not pPlayer:IsSuperAdmin() then return end
+    timer.Simple(2, function()
+    net.Start("bSecure.VPN.Whitelist")
+        for k,v in pairs(bSecure.VPN.Whitelist) do
+            net.WriteString(k)
+        end
+        net.Send(pPlayer)
+    end)
 end)

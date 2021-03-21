@@ -1,13 +1,16 @@
 bSecure = {}
 bSecure.ConCommands = {}
-
+bSecure.iConCommands = {}
 function bSecure.ConCommandAdd(strName, callback)
     bSecure.ConCommands[strName] = callback
+    table.insert(bSecure.iConCommands,"bsecure "..strName)
 end
 
 concommand.Add("bsecure", function(ply, cmd, args)
     if not args[1] then return end
     if bSecure.ConCommands[args[1]] then return bSecure.ConCommands[args[1]](ply, cmd, args) end
+end, function()
+    return bSecure.iConCommands
 end)
 
 local prefixCol = Color(30, 200, 100)
@@ -52,11 +55,14 @@ function bSecure.IncludeModules()
 end
 
 if SERVER then
+    include("bsecure/bsecure_language.lua")
+    AddCSLuaFile("bsecure/bsecure_language.lua")
     include("bsecure/bsecure_server.lua")
     AddCSLuaFile("bsecure/bsecure_client.lua")
 end
 
 if CLIENT then
+    include("bsecure/bsecure_language.lua")
     include("bsecure/bsecure_client.lua")
 end
 

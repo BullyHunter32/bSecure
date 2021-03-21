@@ -12,22 +12,49 @@ local flaggedStrings = bSecure.ArrayToList({
     "meth solutions is the best cheat money can buy\" - laxol - methamphetamine.solution", -- wolfie fucked up on this one 
 })
 
-hook.Add("PlayerSay", "bSecure.CheckMethamphetaminePhrase", function(pPlayer, strText)
-    if flaggedStrings[strText] then
-        -- If people get banned after doing it once, there will 100% be trolling
-        pPlayer.iFlaggedMessages = pPlayer.iFlaggedMessages
+local config = {} or bSecure.ACP.AntiMethChatSpam
+local strictnessLevel = config.StrictnessLevel
+local shouldBan = config.ShouldBan
 
-        if pPlayer.iFlaggedMessages >= 4 then
+local tIntTranslation = {
+    {"0","o"},
+    {"1","i"},
+    {"3","e"},
+    {"4","a"},
+    {"5","s"}
+}
+
+hook.Add("PlayerSay", "bSecure.CheckMethamphetaminePhrase", function(pPlayer, strText)
+    if strictnessLevel == 1 then
+        if flaggedStrings[strText] then
             bSecure.PrintDetection(("Detected malicious message by %s[%s]: \"%s\""):format(
                 pPlayer.SteamName and pPlayer:SteamName() or pPlayer:Nick(),
                 pPlayer:SteamID64(),
                 strText
             ))
-            bSecure.BanPlayer(pPlayer, "Malicious message detected", 0)
+            hook.Run("bSecure.MaliciousChatSent", pPlayer, strText)
+            if config.ShouldBan then
+                Secure.BanPlayer(pPlayer, "Malicious message detected", 0)
+            end
+            return ""
         end
-       
-        pPlayer.iFlaggedMessages = pPlayer.iFlaggedMessages + 1
-        hook.Run("bSecure.MaliciousChatSent", pPlayer, strText)
-        return ""
+        return
+    end
+
+    -- level 2 strictness level --
+    if flaggedStrings[strText] then
+        bSecure.PrintDetection("Detected malicious text sent by ".. bSecure.FormatPlayer(pPlayer) .. ": ".. strText)
+        return
+    end
+    local iWebStart = string.find(strText,"- methamphetamine.solutions")
+    if !iWebStart then return end
+    local strNewText = string.sub(strText,1,iWebStart-1)
+    local strSubText = strNewText
+    for k,v in ipairs(tIntTranslation) do
+        strSubText = strSubText:gsub(v[1],v[2])
+    end
+    local strFull = strSubText .. " - methamphetamine.solutions"
+    if flaggedStrings[strFull] then
+        bSecure.PrintDetection("Detected suspicious text ", strText , " -> ", strFull)
     end
 end)
