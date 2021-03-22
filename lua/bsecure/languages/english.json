@@ -6,7 +6,7 @@
     "screengrab_detour_detected" : "Detected detoured screengrab function(s)",
     "skid_detection" : "{{ player_name }} may be hacking. Sources - {{ sources }}",
     "player_connected_vpn" : "{{ player_name }} has connected with a vpn!",
-    "player_connected_no_vpn" : "{{ player_nane }} has connected without a vpn.",
+    "player_connected_no_vpn" : "{{ player_name }} has connected without a vpn.",
     "detected_ip_vpn" : "{{ ip_address }} is a vpn.",
     "allowcslua_enabled_reminder" : "sv_allowcslua is enabled! This allows players to run malicious scripts such as hacks or exploits on your server."
 }
