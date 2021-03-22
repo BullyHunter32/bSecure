@@ -105,7 +105,7 @@ function bSecure.BanPlayer(pPlayer, strReason, iDuration) -- Bans a player
     end
     hook.Run("bSecure.PostPlayerBan", pPlayer, strReason, iDuration)
 end
-bSecure.Ban = bSecure.BanPlayer
+bSecure.Ban = bSecure.BanPlayer -- alias
 
 function bSecure.ArrayToList(tTable) -- Changes the value for every key to true
     local returned = {}

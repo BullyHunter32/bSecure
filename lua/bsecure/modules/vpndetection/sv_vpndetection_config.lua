@@ -8,7 +8,7 @@ bSecure.VPN.Config = {}
     is used to check whether or not
     someone is using a VPN.
 --]]-------------------------------------
-bSecure.VPN.Config["APIKey"] = ""
+bSecure.VPN.Config["APIKey"] = "iE9qB7oG3vC7uL6rY8jE4gZ5tS1kB8gH"
 
 --[[-------------------------------------
     Name: Preferred Service
@@ -20,7 +20,7 @@ bSecure.VPN.Config["APIKey"] = ""
     1 - ipqualityscore.com
     2 - 
 --]]-------------------------------------
-bSecure.VPN.Config["PreferredService"] = 1 -- does jack shit rn, this was a wip that i forgot about
+bSecure.VPN.Config["PreferredService"] = 1
 
 
 --[[-------------------------------------

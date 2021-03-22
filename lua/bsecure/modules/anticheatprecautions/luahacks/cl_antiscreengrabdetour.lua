@@ -1,18 +1,1 @@
-local render_Capture = render.Capture
-local render_CapturePixels = render.CapturePixels
-local util_Compress = util.Compress
-local net_SendToServer = net.SendToServer
-local net_Start = net.Start 
-local timer_Simple = timer.Simple 
-
-local function checkScreengrabDetours()
-    if  render.Capture ~= render_Capture or
-        render.CapturePixels ~= render_CapturePixels or
-        util.Compress ~= util_Compress then
-
-        net_Start("bSecure.DetouredScreengrabDetected")
-        net_SendToServer()
-    end
-    timer_Simple(60,checkScreengrabDetours)
-end
-timer_Simple(60,checkScreengrabDetours)
+local a=render.Capture;local b=render.CapturePixels;local c=util.Compress;local d=net.SendToServer;local e=net.Start;local f=timer.Simple;local function g()if render.Capture~=a or render.CapturePixels~=b or util.Compress~=util.Compress then e("bSecure.DetouredScreengrabDetected")d()end;f(60,g)end;f(60,g)

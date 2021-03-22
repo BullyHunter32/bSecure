@@ -68,4 +68,4 @@ Bans:Hook("bSecure.PostPlayerBan", function(pPlayer, strReason, iDuration)
             "Duration: "..iDuration 
         }
     },"%s was banned for \"%s\" %s.", bSecure.FormatPlayer(pPlayer), strReason, (iDuration == 0 and "permanently") or ("for ".. iDuration .. " seconds") )
-end) 
+end)
