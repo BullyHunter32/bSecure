@@ -49,7 +49,7 @@ function bSecure.CheckPlayerVPN(pPlayer)
 end
 
 hook.Add("PlayerInitialSpawn", "bSecure.CheckVPN", function(pPlayer)
-    if game.SinglePlayer() or pPlayer:IsBot() or pPlayer:IPAddress() == "loopback" then return end -- checks whether or not the game is P2P or singleplayer
+    if game.SinglePlayer() or pPlayer:IsBot() or pPlayer:IPAddress() == "loopback" or bSecure.VPN.Config.APIKey == "" then return end -- checks whether or not the game is P2P or singleplayer
     local val = hook.Run("bSecure.ShouldCheckVPN", pPlayer)
 
     if val == nil or val == true then -- checks whether or not a hook is returning false, otherwise it will run
