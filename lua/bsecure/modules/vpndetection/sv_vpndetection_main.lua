@@ -1,5 +1,5 @@
 function bSecure.VPN.FormatURL(IPAddress)
-    return ("https://ipqualityscore.com/api/json/ip/%s/%s"):format(bSecure.VPN.Config.APIKey or "error", IPAddress)
+    return ("https://ipqualityscore.com/api/json/ip/%s/%s"):format((bSecure.VPN.Config.APIKey == "" or not bSecure.VPN.Config.APIKey) and "error", IPAddress)
 end
 
 function bSecure.CheckVPN(Data)
