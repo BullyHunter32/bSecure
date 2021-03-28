@@ -60,7 +60,7 @@ end)
 GAS.Logging:AddModule(MODULE)
 MODULE = GAS.Logging:MODULE()
 MODULE.Category = "bSecure"
-MODULE.Name = "New SteamAccounts"
+MODULE.Name = "New Steam Accounts"
 MODULE.Colour = Color(60, 133, 233)
 
 MODULE:Setup(function()

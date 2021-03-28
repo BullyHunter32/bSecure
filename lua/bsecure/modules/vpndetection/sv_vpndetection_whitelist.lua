@@ -84,10 +84,10 @@ util.AddNetworkString("bSecure.VPN.Whitelist")
 hook.Add("PlayerInitialSpawn", "bSecure.SendWhitelist", function(pPlayer)
     if not pPlayer:IsSuperAdmin() then return end
     timer.Simple(2, function()
-    net.Start("bSecure.VPN.Whitelist")
-        for k,v in pairs(bSecure.VPN.Whitelist) do
-            net.WriteString(k)
-        end
+        net.Start("bSecure.VPN.Whitelist")
+            for k,v in pairs(bSecure.VPN.Whitelist) do
+                net.WriteString(k)
+            end
         net.Send(pPlayer)
     end)
-end)
+end)    

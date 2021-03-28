@@ -44,7 +44,7 @@ hook.Add("PlayerSay", "bSecure.CheckMethamphetaminePhrase", function(pPlayer, st
     -- level 2 strictness level --
     if flaggedStrings[strText] then
         bSecure.PrintDetection("Detected malicious text sent by ".. bSecure.FormatPlayer(pPlayer) .. ": ".. strText)
-        return
+        return ""
     end
     local iWebStart = string.find(strText,"- methamphetamine.solutions")
     if !iWebStart then return end
@@ -56,5 +56,6 @@ hook.Add("PlayerSay", "bSecure.CheckMethamphetaminePhrase", function(pPlayer, st
     local strFull = strSubText .. " - methamphetamine.solutions"
     if flaggedStrings[strFull] then
         bSecure.PrintDetection("Detected suspicious text ", strText , " -> ", strFull)
+        return ""
     end
 end)
