@@ -99,7 +99,7 @@ function bSecure.BanPlayer(pPlayer, strReason, iDuration) -- Bans a player
     if serverguard then
         serverguard:BanPlayer(nil, pPlayer, iDuration, "bSecure - "..strReason, true, false)
     elseif ULib then
-        ULib.Ban(pPlayer, iDuration, strReason)
+        ULib.ban(pPlayer, iDuration, strReason)
     else
         pPlayer:Ban(iDuration,true)
     end
