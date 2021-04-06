@@ -84,13 +84,6 @@ function bSecure.FormatPlayer(pPlayer)
     return pPlayer:Nick() .. "["..pPlayer:SteamID64().."]"
 end
 
-local ULib_Ban = ULib and ULib.Ban or nil
-if ULib and ULib.Ban then
-    function ULib.Ban(ply, time, reason, admin) -- Detour for anti alt comapability
-        hook.Run("bSecure.PreULibBan", ply, time, reason, admin)
-        return ULib_Ban(ply, time, reason, admin)
-    end 
-end
 
 function bSecure.BanPlayer(pPlayer, strReason, iDuration) -- Bans a player
     iDuration = iDuration or ""
@@ -150,6 +143,58 @@ function bSecure.AlertAdmins(strText, bSuperAdminOnly) -- Notifies admins, how t
     net.WriteString(strText)
     net.Send(tRecipients)
 end
+
+local logDataFormat = 
+[[
+     __   _____                         
+    / /_ / ___/___  _______  __________ 
+   / __ \\__ \/ _ \/ ___/ / / / ___/ _ \
+  / /_/ /__/ /  __/ /__/ /_/ / /  /  __/
+ /_.___/____/\___/\___/\__,_/_/   \___/ 
+                                        
+
+[Server]
+HostName - %s
+IP Address - %s
+
+[Suspect]
+Name - %s
+SteamID - %s
+
+[Details]
+Code %s
+%s
+]]
+
+if not file.Exists("bsecure/cases", "DATA") then
+    file.CreateDir("bsecure/cases")
+end
+
+function bSecure.CreateDataLog(tData)
+    local SID64 = tData.SteamID or tData.Player and tData.Player:SteamID64() or false
+    local logData = logDataFormat:format(
+		(GetHostName()),
+		(game.GetIPAddress()),
+        (tData.Name or tData.Player and tData.Player:Name() or "Unknown"),
+        (SID64 or "Unknown"),
+        (tData.Code or "Unknown"),
+        (tData.Details or "No Details")
+    )
+    if SID64 then
+		if not file.Exists("bsecure/cases/"..SID64.."/","DATA") then
+        	file.CreateDir("bsecure/cases/"..SID64)
+		end
+    else
+        return logData
+    end
+    if SID64 then 
+        local id = 0
+        local x,y = file.Find("bsecure/cases/"..SID64.."/"..tData.Code.."*.txt", "DATA")
+        id = #x
+        file.Write("bsecure/cases/"..SID64.."/"..tData.Code.." "..id..".txt", logData) 
+    end
+    return logData
+end 
 
 -- Extra printing
 function bSecure.PrintDetection(...) 
