@@ -16,5 +16,6 @@ The features this currently has at the time of writing this are the following:
 - Logging system. Not made to replace a real logging system.
 - Restrict people from certain countries from joining, such as french people.
 - In game menu
+- Detection data logging, if you're unclear or need guidance on understanding what the logs mean then contact me on discord (BullyHunter#2252).
 
 ... and there are more to come :)
