@@ -10,5 +10,11 @@ The features this currently has at the time of writing this are the following:
 - Detects detoured screengrab functions
 - Notifies superadmins when cslua is enabled just in case they are unaware
 - Detects and prevents meth's chat spamming
+- Anti Exploit
+- Some anticheat precautions
+- Key logger
+- Logging system. Not made to replace a real logging system.
+- Restrict people from certain countries from joining, such as french people.
+- In game menu
 
 ... and there are more to come :)
