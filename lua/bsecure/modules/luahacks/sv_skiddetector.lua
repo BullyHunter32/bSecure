@@ -2,7 +2,7 @@
 util.AddNetworkString("bSecure.SkidConfessionBooth")
 net.Receive("bSecure.SkidConfessionBooth", function(_,pPlayer)
     local src = net.ReadString()
-    bSecure.PrintDetection(bSecure:GetPhrase("skid_detection", {["player_name"] = bSecure.FormatPlayer(pPlayer),["sources"] = src}))
+    bSecure.CreateDataLog{Player = pPlayer, Code = "105A", Details = "The suspect has many potentially harmful lua files within garrysmod/lua. Sources: ".. src}
     hook.Run("bSecure.SkidDetected", pPlayer, src)
 end)
 

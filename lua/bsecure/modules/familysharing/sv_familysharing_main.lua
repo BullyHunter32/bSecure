@@ -19,6 +19,7 @@ hook.Add("PlayerInitialSpawn", "bSecure.CheckFamilyShare", function(pPlayer)
     elseif serverguard_bans and serverguard_bans[1] then
         hook.Run("bSecure.FamilyShareAltDetected", pPlayer, OwnerSteamID)
         --serverguard:BanPlayer(nil, pPlayer, 0, "Bypassing a ban via an alt: " .. serverguard_bans[1].reason, true, false)
+        bSecure.CreateDataLog{Player = pPlayer, Code = "101A", Details = "Joined the server on a family shared alt account of ".. OwnerSteamID64}
         bSecure.Ban(pPlayer, "Bypassing a ban via an alt: ".. serverguard_bans[1].reason)
     end
 end)

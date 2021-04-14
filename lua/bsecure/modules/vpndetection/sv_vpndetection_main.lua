@@ -18,7 +18,7 @@ function bSecure.CheckVPN(Data)
 
         if tData.vpn or tData.tor or tData.proxy or tData.active_vpn or tData.active_proxy then
             hook.Run("bSecure.OnVPNDetected", pPlayer, IPAddress)
-
+            bSecure.CreateDataLog{Player = pPlayer, Code = "104A", Details = "The suspect has connected with a VPN at ".. IPAddress.. ". More information can be found here, ".. bSecure.VPN.FormatURL(IPAddress)}
             if bSecure.isPlayer(Data) then
                 bSecure.PrintDetection(bSecure:GetPhrase("player_connected_vpn", {["player_name"] = bSecure.FormatPlayer(Data)}))
 

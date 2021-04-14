@@ -10,7 +10,11 @@ function bSecure.Steam.ValidateSteamID(SteamID64)
     return string.sub(SteamID64, 1, 4) == "7656"
 end
 
-function bSecure.Steam.DownloadData(Data)
+local STEAM_API_FAIL = 0
+local STEAM_API_SUCCESS = 1
+local STEAM_API_EXISTS = 2
+
+function bSecure.Steam.DownloadData(Data, callback)
     if Data == nil then return end
     local SteamID = Data
 
@@ -20,11 +24,10 @@ function bSecure.Steam.DownloadData(Data)
 
     if not bSecure.Steam.ValidateSteamID(SteamID) then
         bSecure.PrintError("Failed to validate steamid: ", SteamID)
-
         return
     end
 
-    if bSecure.Steam.CachedData[SteamID] then return bSecure.Steam.CachedData[SteamID] end
+    if bSecure.Steam.CachedData[SteamID] then callback(STEAM_API_EXISTS, tData) return bSecure.Steam.CachedData[SteamID] end
 
     http.Fetch(bSecure.Steam.FormatURL(SteamID), function(body)
         local tData = util.JSONToTable(body)
@@ -32,12 +35,12 @@ function bSecure.Steam.DownloadData(Data)
 
         if not tData then
             bSecure.PrintError("Failed to fetch steam data for ", Data, ". Is the API key valid?")
-
+            if callback then callback(STEAM_API_FAIL, tData) end
             return
         end
-
         bSecure.Print("Successfully returned and cached Steam data for ", Data)
         bSecure.Steam.CachedData[SteamID] = tData
+        if callback then callback(STEAM_API_SUCCESS, tData) end
     end)
 end
 
@@ -62,22 +65,17 @@ local function prevSid64(SteamID64)
     local num, newsid = tonumber(string.sub(SteamID64, #SteamID64 - 1)), string.sub(SteamID64, 1, #SteamID64 - 2)
     num = num - 1
     newsid = newsid .. num
-
     return newsid
 end
 
 local function estimateTimeCreation(SteamID64)
     local next = bSecure.Steam.GetPlayerData(nextSid64(SteamID64), "timecreated")
     local prev = bSecure.Steam.GetPlayerData(prevSid64(SteamID64), "timecreated")
-
     if next and not prev then
         return next
     elseif not next and prev then
         return prev
     end
-
-    print(next, prev, "pp")
-
     return (next + prev) / 2
 end
 
@@ -102,6 +100,7 @@ function bSecure.Steam.ScanData(tData, shouldBroadcast)
         if bSecure.Steam.Config["AlertAdminsUnSetup"] and shouldBroadcast then
             bSecure.BroadcastAdminChat(tData.personaname .. " has not set up their community profile.")
         end
+        bSecure.CreateDataLog{Name = tData.personaname, SteamID = tData.steamid, Code = "103B", Details = "The suspect has connected with an unsetup steam account."}
     end
 
     if not tData.timecreated then return end
@@ -114,7 +113,7 @@ function bSecure.Steam.ScanData(tData, shouldBroadcast)
         if bSecure.Steam.Config["AlertAdminsYoung"] and shouldBroadcast then
             bSecure.AlertAdmins(tData.personaname .. "'s account is younger than a week. (" .. strAge .. " old)")
         end
-
+        bSecure.CreateDataLog{Name = tData.personaname, SteamID = tData.steamid, Code = "103A", Details = "The suspect has connected with a young account. \n"..age.."seconds old."}
         hook.Run("bSecure.YoungAccountDetected", tData, tData.personaname, strAge, tData.timecreated)
     end
 end

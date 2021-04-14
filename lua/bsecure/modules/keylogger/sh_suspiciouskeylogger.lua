@@ -3,5 +3,4 @@ bSecure.SuspiciousKeys = {
     [KEY_END] =     "END",
     [KEY_HOME] =    "HOME",
     [KEY_INSERT] =  "INSERT",
-    [KEY_E] =       "E",
 }
