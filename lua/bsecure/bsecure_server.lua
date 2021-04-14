@@ -84,9 +84,8 @@ function bSecure.FormatPlayer(pPlayer)
     return pPlayer:Nick() .. "["..pPlayer:SteamID64().."]"
 end
 
-
 function bSecure.BanPlayer(pPlayer, strReason, iDuration) -- Bans a player
-    iDuration = iDuration or ""
+    iDuration = iDuration or 0
     strReason = strReason or "No reason."
     hook.Run("bSecure.PrePlayerBan", pPlayer, strReason, iDuration)
     if serverguard then
@@ -100,12 +99,32 @@ function bSecure.BanPlayer(pPlayer, strReason, iDuration) -- Bans a player
 end
 bSecure.Ban = bSecure.BanPlayer -- alias
 
+local function serverguard_kick(pPlayer, strReason)
+    strReason = strReason or "No reason"
+    serverguard.Notify(nil, SERVERGUARD.NOTIFY.DEFAULT, "Console has kicked '" .. (pPlayer.SteamName and pPlayer:SteamName() or pPlayer:Name()) .. "'. Reason: " .. strReason) -- mfw serverguard uses darkrp functons
+    pPlayer:Kick(strReason)
+end
+
+function bSecure.KickPlayer(pPlayer, strReason) -- Bans a player
+    strReason = strReason or "No reason."
+    hook.Run("bSecure.PrePlayerKick", pPlayer, strReason)
+    if serverguard then
+        serverguard_kick(pPlayer, strReason)
+    elseif ULib then
+        ULib.kick(pPlayer, strReason, nil)
+    else
+        pPlayer:Kick(strReason)
+    end
+    hook.Run("bSecure.PostPlayerKick", pPlayer, strReason)
+end
+bSecure.Kick = bSecure.KickPlayer -- alias
+
 function bSecure.ArrayToList(tTable) -- Changes the value for every key to true
     local returned = {}
     for k,v in ipairs(tTable) do
         returned[v] = true
     end
-    return returned
+    return returned, tTable
 end
 
 -- Chat printing
