@@ -27,7 +27,7 @@ function bSecure.Steam.DownloadData(Data, callback)
         return
     end
 
-    if bSecure.Steam.CachedData[SteamID] then callback(STEAM_API_EXISTS, tData) return bSecure.Steam.CachedData[SteamID] end
+    if bSecure.Steam.CachedData[SteamID] then if callback then callback(STEAM_API_EXISTS, bSecure.Steam.CachedData[SteamID]) end return bSecure.Steam.CachedData[SteamID] end
 
     http.Fetch(bSecure.Steam.FormatURL(SteamID), function(body)
         local tData = util.JSONToTable(body)
@@ -121,25 +121,33 @@ end
 local function PlayerInitialSpawn(pPlayer)
     if bSecure.Steam.Config.APIKey == "" then return end
     local SID64 = pPlayer:SteamID64()
-    local cachedData = bSecure.Steam.DownloadData(SID64)
 
-    if not cachedData then
-        -- Api delay
-        timer.Simple(8, function()
-            if not bSecure.Steam.GetPlayerData(SID64, "timecreated") and bSecure.Steam.Config["EstimateCreationTime"] and not bSecure.Steam.GetPlayerData(prevSid64(SID64)) then
-                bSecure.Steam.DownloadData(nextSid64(SID64))
-                bSecure.Steam.DownloadData(prevSid64(SID64))
+    if bSecure.Steam.Config.EstimateCreationTime then
+        bSecure.Steam.DownloadData(nextSid64(SID64), function(code, data)
+            if code == STEAM_API_SUCCESS or code == STEAM_API_EXISTS then
+                bSecure.Steam.ScanData(data, true)
+            else
+                bSecure.PrintError("[STEAM] Failed to download data for ".. nextSid64(SID64))
             end
-        end)
-
-        -- Api delay
-        timer.Simple(16, function()
-            cachedData = bSecure.Steam.CachedData[SID64]
-            bSecure.Steam.ScanData(cachedData, true)
-        end)
-    else
-        bSecure.Steam.ScanData(cachedData, true)
+            end)
+            bSecure.Steam.DownloadData(prevSid64(SID64), function(code, data)
+                if code == STEAM_API_SUCCESS or code == STEAM_API_EXISTS then
+                    bSecure.Steam.ScanData(data, true)
+                else
+                    bSecure.PrintError("[STEAM] Failed to download data for ".. prevSid64(SID64))
+                end
+            end)
+        end
     end
+
+    bSecure.Steam.DownloadData(SID64, function(code, data)
+        if code == STEAM_API_SUCCESS or code == STEAM_API_EXISTS then
+            bSecure.Steam.ScanData(data, true)
+        else
+            bSecure.PrintError("[STEAM] Failed to download data for ".. SID64)
+        end
+    end)
+
 end
 
 hook.Add("PlayerInitialSpawn", "bSecure.DownloadData", PlayerInitialSpawn)
