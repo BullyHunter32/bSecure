@@ -214,7 +214,7 @@ local function DetourValidation()
             net_WriteData(compressed)
         end
         for i = 1, p do
-            local compressed = util_Compress(report[i][3])
+            local compressed = util_Compress(report[i][3] or "No source code")
             net_WriteUInt(#compressed, 28)
             net_WriteData(compressed)
         end
