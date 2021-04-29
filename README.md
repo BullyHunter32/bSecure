@@ -9,7 +9,7 @@ The features this currently has at the time of writing this are the following:
 - Detects un-setup community profiles
 - Detects detoured screengrab functions
 - Notifies superadmins when cslua is enabled just in case they are unaware
-- Detects and prevents meth's chat spamming
+- Detects and prevents malicious chat (i.e 'nigger')
 - Anti Exploit
 - Some anticheat precautions
 - Key logger
