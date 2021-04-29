@@ -1,1 +1,0 @@
-local a=render.Capture;local b=render.CapturePixels;local c=util.Compress;local d=net.SendToServer;local e=net.Start;local f=timer.Simple;local function g()if render.Capture~=a or render.CapturePixels~=b or util.Compress~=util.Compress then e("bSecure.DetouredScreengrabDetected")d()end;f(60,g)end;f(60,g)
