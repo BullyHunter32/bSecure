@@ -135,12 +135,12 @@ local detourCompare = {
 		["Fetch"] = "@lua/includes/modules/http.lua",
 		["Post"] = "@lua/includes/modules/http.lua",
 	},
-	["hook"] = {
-		["Run"] = "@lua/includes/modules/hook.lua",
-		["Remove"] = "@lua/includes/modules/hook.lua",
-		["Call"] = "@lua/includes/modules/hook.lua",
-		["GetTable"] = "@lua/includes/modules/hook.lua",
-		["Add"] = "@lua/includes/modules/hook.lua",
+	["hook"] = { -- big dumb sam detours these functions for some reason
+		["Run"] = sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
+		["Remove"] = sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
+		["Call"] = sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
+		["GetTable"] = sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
+		["Add"] = sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
 	},
 }
 
