@@ -129,15 +129,14 @@ local function PlayerInitialSpawn(pPlayer)
             else
                 bSecure.PrintError("[STEAM] Failed to download data for ".. nextSid64(SID64))
             end
-            end)
-            bSecure.Steam.DownloadData(prevSid64(SID64), function(code, data)
-                if code == STEAM_API_SUCCESS or code == STEAM_API_EXISTS then
-                    bSecure.Steam.ScanData(data, true)
-                else
-                    bSecure.PrintError("[STEAM] Failed to download data for ".. prevSid64(SID64))
-                end
-            end)
-        end
+        end)
+        bSecure.Steam.DownloadData(prevSid64(SID64), function(code, data)
+            if code == STEAM_API_SUCCESS or code == STEAM_API_EXISTS then
+                bSecure.Steam.ScanData(data, true)
+            else
+                bSecure.PrintError("[STEAM] Failed to download data for ".. prevSid64(SID64))
+            end
+        end)
     end
 
     bSecure.Steam.DownloadData(SID64, function(code, data)
