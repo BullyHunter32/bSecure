@@ -135,12 +135,12 @@ local detourCompare = {
 		["Fetch"] = "@lua/includes/modules/http.lua",
 		["Post"] = "@lua/includes/modules/http.lua",
 	},
-	["hook"] = { -- big dumb sam detours these functions for some reason
-		["Run"] = sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
-		["Remove"] = sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
-		["Call"] = sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
-		["GetTable"] = sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
-		["Add"] = sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
+	["hook"] = { -- big dumb sam detours these functions for some reason. so does ulx, smh
+		["Run"] = ULib and "@addons/ulib/lua/ulib/shared/hook.lua" or sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
+		["Remove"] = ULib and "@addons/ulib/lua/ulib/shared/hook.lua" or sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
+		["Call"] = ULib and "@addons/ulib/lua/ulib/shared/hook.lua" or sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
+		["GetTable"] = ULib and "@addons/ulib/lua/ulib/shared/hook.lua" or sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
+		["Add"] = ULib and "@addons/ulib/lua/ulib/shared/hook.lua" or sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
 	},
 }
 
