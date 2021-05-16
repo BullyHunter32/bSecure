@@ -11,10 +11,11 @@ function bSecure.Steam.VAC.FormatURL(SteamID)
 end
 
 hook.Add("PlayerInitialSpawn", "bSecure.Steam.VAC", function(pPlayer)
+    if pPlayer:IsBot() then return end
     http.Fetch(bSecure.Steam.VAC.FormatURL(pPlayer:SteamID64()), function(body)
         if !body then return end
         local tData = util.JSONToTable(body)
-        if not tData.players then
+        if not tData or not tData.players then
             bSecure.PrintError("Failed to lookup ".. bSecure.FormatPlayer(pPlayer).."'s steam ban history.")
             return
         end
