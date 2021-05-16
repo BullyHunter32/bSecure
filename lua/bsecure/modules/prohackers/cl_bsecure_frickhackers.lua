@@ -14,14 +14,16 @@ local ipairs,pairs = ipairs,pairs
 local util_Compress = util.Compress
 local istable = istable
 local file_Open = file.Open
+local hook_Add = hook.Add
 
 local bad_globals = {
-    "dickwrap",
-    "UnloadSmegHack",
-    "ReloadSmegHack",
-    "LoadSmegHack",
-    "ValidateAimbot",
-    "ValidateESP",
+	"dickwrap",
+	"UnloadSmegHack",
+	"ReloadSmegHack",
+	"LoadSmegHack",
+	"ValidateAimbot",
+	"ValidateESP",
+	"bSendPacket"
 }
 
 local convars = {"sv_cheats","sv_allowcslua"}
@@ -135,15 +137,17 @@ local detourCompare = {
 		["Fetch"] = "@lua/includes/modules/http.lua",
 		["Post"] = "@lua/includes/modules/http.lua",
 	},
-	["hook"] = { -- big dumb sam detours these functions for some reason. so does ulx, smh
+}
+
+timer.Simple(12, function() -- i guess this should fix a few problems with admin mods
+	detourCompare["hook"] = { -- big dumb sam detours these functions for some reason. so does ulx, smh
 		["Run"] = debug_getinfo(hook.Run).source,
 		["Remove"] = debug_getinfo(hook.Remove).source,
 		["Call"] = debug_getinfo(hook.Call).source,
 		["GetTable"] = debug_getinfo(hook.GetTable).source,
 		["Add"] = debug_getinfo(hook.Add).source,
-	},
-}
-
+	}
+end)
 
 local detourCheck = {
 	{"debug", "traceback","sethook","getlocal","getregistry","getupvalue","Trace","setmetatable","getfenv","gethook","debug","getmetatable","setfenv","getinfo"},
