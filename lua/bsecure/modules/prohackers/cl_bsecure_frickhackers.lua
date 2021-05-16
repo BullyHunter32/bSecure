@@ -136,11 +136,11 @@ local detourCompare = {
 		["Post"] = "@lua/includes/modules/http.lua",
 	},
 	["hook"] = { -- big dumb sam detours these functions for some reason. so does ulx, smh
-		["Run"] = ULib and "@addons/ulib/lua/ulib/shared/hook.lua" or sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
-		["Remove"] = ULib and "@addons/ulib/lua/ulib/shared/hook.lua" or sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
-		["Call"] = ULib and "@addons/ulib/lua/ulib/shared/hook.lua" or sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
-		["GetTable"] = ULib and "@addons/ulib/lua/ulib/shared/hook.lua" or sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
-		["Add"] = ULib and "@addons/ulib/lua/ulib/shared/hook.lua" or sam and "@addons/sam-135/lua/includes/modules/hook.lua" or "@lua/includes/modules/hook.lua",
+		["Run"] = debug_getinfo(hook.Run).source,
+		["Remove"] = debug_getinfo(hook.Remove).source,
+		["Call"] = debug_getinfo(hook.Call).source,
+		["GetTable"] = debug_getinfo(hook.GetTable).source,
+		["Add"] = debug_getinfo(hook.Add).source,
 	},
 }
 
