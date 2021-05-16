@@ -5,6 +5,7 @@ The idea behind bSecure was to be a free, open source addon revolved around the 
 The features this currently has at the time of writing this are the following:
 - VPN Detection
 - Family share alt detection
+- 2 anti alt detection methods, excluding family shared alts
 - Detects recently made steam accounts (within 1 week)
 - Detects un-setup community profiles
 - Detects detoured screengrab functions
@@ -17,5 +18,8 @@ The features this currently has at the time of writing this are the following:
 - Restrict people from certain countries from joining, such as french people.
 - In game menu
 - Detection data logging, if you're unclear or need guidance on understanding what the logs mean then contact me on discord (BullyHunter#2252).
+- Anti net message spam
+- VAC ban/game ban limitations (stops players with x or more vac/game bans from playing)
+
 
 ... and there are more to come :)
