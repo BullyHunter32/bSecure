@@ -1,5 +1,5 @@
 local net_ReadUInt = net.ReadUInt
-local net_Receive = neet.Receive
+local net_Receive = net.Receive
 local net_ReadString = net.ReadString
 
 net_Receive("bSecure.VPN.Whitelist", function()

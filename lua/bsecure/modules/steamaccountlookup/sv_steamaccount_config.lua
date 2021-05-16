@@ -9,7 +9,7 @@ bSecure.Steam.Config = {}
     used to lookup data about an
     individual
 --]]-------------------------------------
-bSecure.Steam.Config["APIKey"] = ""
+bSecure.Steam.Config["APIKey"] = "B4F78850DAF0F43B337D280D190D8745"
 
 --[[-------------------------------------
     Name: Alert admins - New account
