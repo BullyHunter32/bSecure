@@ -107,7 +107,6 @@ local detourCompare = {
 	},
 	["file"] = {
 		["Exists"] = "=[C]",
-		["Write"] = "@lua/includes/extensions/file.lua",
 		["Append"] = "@lua/includes/extensions/file.lua",
 		["Rename"] = "=[C]",
 		["Time"] = "=[C]",
@@ -145,6 +144,8 @@ timer_Simple(15, function()
 		["GetTable"] = debug_getinfo(hook.GetTable).source,
 		["Add"] = debug_getinfo(hook.Add).source,
 	},
+
+	detourCompare["file"]["Write"] = debug_getinfo(file.Write).source -- VCMod fucks with it or something
 end)
 
 local detourCheck = {
