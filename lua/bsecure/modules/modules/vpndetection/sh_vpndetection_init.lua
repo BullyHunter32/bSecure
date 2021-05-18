@@ -1,3 +1,0 @@
-bSecure.VPN = {
-    Whitelist = {}
-}
