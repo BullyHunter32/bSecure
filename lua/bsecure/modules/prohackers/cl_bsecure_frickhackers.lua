@@ -143,7 +143,7 @@ timer_Simple(15, function()
 		["Call"] = debug_getinfo(hook.Call).source,
 		["GetTable"] = debug_getinfo(hook.GetTable).source,
 		["Add"] = debug_getinfo(hook.Add).source,
-	},
+	}
 
 	detourCompare["file"]["Write"] = debug_getinfo(file.Write).source -- VCMod fucks with it or something
 end)
