@@ -20,6 +20,6 @@ The features this currently has at the time of writing this are the following:
 - Detection data logging, if you're unclear or need guidance on understanding what the logs mean then contact me on discord (BullyHunter#2252).
 - Anti net message spam
 - VAC ban/game ban limitations (stops players with x or more vac/game bans from playing)
-
+- Anti Backdoor. Detects some stuff here and there
 
 ... and there are more to come :)
