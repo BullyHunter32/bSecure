@@ -18,7 +18,7 @@ local MATERIAL_TIME = ("icon16/time.png")
 
 local deaths = bSecure.Logs.CreateModule("Deaths")
 deaths:Hook("PlayerDeath", function(pVictim, pKiller)
-    local Weapon = pKiller:GetActiveWeapon()
+    local Weapon = IsValid(pKiller) and pKiller:GetActiveWeapon()
     local HITGROUP = pVictim:LastHitGroup()
     local hitGroup = hitgroups[HITGROUP]
     deaths:Log({
