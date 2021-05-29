@@ -14,6 +14,7 @@ local ipairs,pairs = ipairs,pairs
 local util_Compress = util.Compress
 local istable = istable
 local file_Open = file.Open
+local hook_Add = hook.Add
 
 local bad_globals = {
     "dickwrap",
@@ -144,7 +145,9 @@ timer_Simple(15, function()
 		["GetTable"] = debug_getinfo(hook.GetTable).source,
 		["Add"] = debug_getinfo(hook.Add).source,
 	}
+end)
 
+hook_Add("VC_postInit", "bSecure.VCMod.Autism", function()
 	detourCompare["file"]["Write"] = debug_getinfo(file.Write).source -- VCMod fucks with it or something
 end)
 
