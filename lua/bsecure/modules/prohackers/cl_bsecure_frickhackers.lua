@@ -147,16 +147,12 @@ timer_Simple(15, function()
 	}
 end)
 
-hook_Add("VC_postInit", "bSecure.VCMod.Autism", function()
-	detourCompare["file"]["Write"] = debug_getinfo(file.Write).source -- VCMod fucks with it or something
-end)
-
 local detourCheck = {
 	{"debug", "traceback","sethook","getlocal","getregistry","getupvalue","Trace","setmetatable","getfenv","gethook","debug","getmetatable","setfenv","getinfo"},
 	{"vgui", "CreateX","CursorVisible","RegisterFile","Create","IsHoveringWorld","GetHoveredPanel","GetWorldPanel","GetKeyboardFocus","FocusedHasParent","Register","RegisterTable","CreateFromTable","GetControlTable"},
 	{"concommand", "Run","Remove","AutoComplete","GetTable","Add"},
 	{"net", "Receive","WriteInt","ReadInt","SendToServer","WriteFloat","ReadType","BytesWritten","WriteBool","WriteAngle","WriteBit","ReadHeader","WriteType","BytesLeft","ReadBit","WriteNormal","WriteUInt","ReadString","ReadMatrix","WriteColor","WriteDouble","ReadTable","WriteMatrix","ReadBool","ReadColor","ReadEntity","WriteData","WriteEntity","ReadUInt","ReadData","WriteTable","Start","WriteString","ReadDouble","ReadFloat","WriteVector","Incoming","ReadAngle","ReadNormal","ReadVector"},
-	{"file", "Exists","Write","Append","Rename","Time","Delete","Read","Size","AsyncRead","Open","CreateDir","IsDir","Find"},
+	{"file", "Exists","Append","Rename","Time","Delete","Read","Size","AsyncRead","Open","CreateDir","IsDir","Find"},
 	{"sql", "Query","QueryValue","SQLStr","LastError","Commit","QueryRow","IndexExists","TableExists","Begin"},
 	{"http", "Fetch","Post"},
 	{"hook", "Run","Remove","Call","GetTable","Add"},
