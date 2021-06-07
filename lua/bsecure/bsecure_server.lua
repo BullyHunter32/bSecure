@@ -84,18 +84,18 @@ function bSecure.FormatPlayer(pPlayer)
     return pPlayer:Nick() .. "["..pPlayer:SteamID64().."]"
 end
 
+local banQueue = {}
+local banQueue2 = {}
 function bSecure.BanPlayer(pPlayer, strReason, iDuration) -- Bans a player
-    iDuration = iDuration or 0
-    strReason = strReason or "No reason."
-    hook.Run("bSecure.PrePlayerBan", pPlayer, strReason, iDuration)
-    if serverguard then
-        serverguard:BanPlayer(nil, pPlayer, iDuration, "bSecure - "..strReason, true, false)
-    elseif ULib then
-        ULib.ban(pPlayer, iDuration, strReason)
-    else
-        pPlayer:Ban(iDuration,true)
-    end
-    hook.Run("bSecure.PostPlayerBan", pPlayer, strReason, iDuration)
+    print("Ban1")
+    if not IsValid(pPlayer) or banQueue2[pPlayer] then return end
+    print("Ban2")
+    banQueue2[pPlayer] = true
+    table.insert(banQueue, {
+        pPlayer,
+        strReason or "No Reason.",
+        iDuration or 0
+    })
 end
 bSecure.Ban = bSecure.BanPlayer -- alias
 
@@ -105,19 +105,58 @@ local function serverguard_kick(pPlayer, strReason)
     pPlayer:Kick(strReason)
 end
 
+local kickQueue = {}
+local kickQueue2 = {}
 function bSecure.KickPlayer(pPlayer, strReason) -- Bans a player
-    strReason = strReason or "No reason."
-    hook.Run("bSecure.PrePlayerKick", pPlayer, strReason)
-    if serverguard then
-        serverguard_kick(pPlayer, strReason)
-    elseif ULib then
-        ULib.kick(pPlayer, strReason, nil)
-    else
-        pPlayer:Kick(strReason)
-    end
-    hook.Run("bSecure.PostPlayerKick", pPlayer, strReason)
+    print("Kick1")
+    if not IsValid(pPlayer) or kickQueue2[pPlayer] then return end
+    print("Kick2")
+    kickQueue2[pPlayer] = true
+    table.insert(kickQueue, {
+        pPlayer,
+        strReason or "No Reason."
+    })
 end
 bSecure.Kick = bSecure.KickPlayer -- alias
+
+local lastAdministrationAction = 0
+hook.Add("Think", "bSecure.Administration", function()
+    if CurTime() - lastAdministrationAction < 0.025 then return end
+    local tBanData = banQueue[1]
+    local tKickData = kickQueue[1]
+    if tBanData then
+        local pPlayer, strReason, iDuration = tBanData[1], tBanData[2], tBanData[3]
+        hook.Run("bSecure.PrePlayerBan", pPlayer, strReason, iDuration)
+        if serverguard then
+            serverguard:BanPlayer(nil, pPlayer, iDuration, "bSecure - "..strReason, true, false)
+        elseif ULib then
+            ULib.ban(pPlayer, iDuration, strReason)
+        else
+            pPlayer:Ban(iDuration,true)
+        end
+        hook.Run("bSecure.PostPlayerBan", pPlayer, strReason, iDuration)
+        table.remove(banQueue, 1)
+        banQueue2[pPlayer] = nil
+        lastAdministrationAction = CurTime()
+    end
+
+    if tKickData then
+        local pPlayer, strReason = tKickData[1], tKickData[2]
+        strReason = strReason or "No reason."
+        hook.Run("bSecure.PrePlayerKick", pPlayer, strReason)
+        if serverguard then
+            serverguard_kick(pPlayer, strReason)
+        elseif ULib then
+            ULib.kick(pPlayer, strReason, nil)
+        else
+            pPlayer:Kick(strReason)
+        end
+        hook.Run("bSecure.PostPlayerKick", pPlayer, strReason)
+        table.remove(kickQueue, 1)
+        kickQueue[pPlayer] = nil
+        lastAdministrationAction = CurTime()
+    end
+end)
 
 function bSecure.ArrayToList(tTable) -- Changes the value for every key to true
     local returned = {}
@@ -189,7 +228,18 @@ if not file.Exists("bsecure/cases", "DATA") then
     file.CreateDir("bsecure/cases")
 end
 
+bSecure.ExploitRetards = {}
+local dataLogQueue = {}
 function bSecure.CreateDataLog(tData)
+    if not tData.Player or not IsValid(tData.Player) or bSecure.ExploitRetards[tData.Player] then return end
+    table.insert(dataLogQueue, tData)
+end 
+
+local lastLog = 0
+hook.Add("Think", "bSecure.DataLogQueue", function()
+    local tData = dataLogQueue[1]
+    if not tData or CurTime() - lastLog < 1 then return end
+
     local SID64 = tData.SteamID or tData.Player and tData.Player:SteamID64() or false
     local logData = logDataFormat:format(
 		(GetHostName()),
@@ -199,6 +249,7 @@ function bSecure.CreateDataLog(tData)
         (tData.Code or "Unknown"),
         (tData.Details or "No Details")
     )
+
     if SID64 then
 		if not file.Exists("bsecure/cases/"..SID64.."/","DATA") then
         	file.CreateDir("bsecure/cases/"..SID64)
@@ -206,14 +257,15 @@ function bSecure.CreateDataLog(tData)
     else
         return logData
     end
-    if SID64 then 
-        local id = 0
-        local x,y = file.Find("bsecure/cases/"..SID64.."/"..tData.Code.."*.txt", "DATA")
-        id = #x
-        file.Write("bsecure/cases/"..SID64.."/"..tData.Code.." "..id..".txt", logData) 
-    end
-    return logData
-end 
+
+    local id = 0
+    local x,y = file.Find("bsecure/cases/"..SID64.."/"..tData.Code.."*.txt", "DATA")
+    id = #x
+    file.Write("bsecure/cases/"..SID64.."/"..tData.Code.." "..id..".txt", logData) 
+    table.remove(dataLogQueue, 1)
+
+    lastLog = CurTime()
+end)
 
 -- Extra printing
 function bSecure.PrintDetection(...) 
