@@ -21,7 +21,7 @@ The features this currently has at the time of writing this are the following:
 - Anti net message spam
 - VAC ban/game ban limitations (stops players with x or more vac/game bans from playing)
 - Anti Backdoor. Detects some stuff here and there
-- Screengrabber
+- Extremely optimised screengrabber in exchange for reliability
 - AntiBHop
 
 ... and there are more to come :)
