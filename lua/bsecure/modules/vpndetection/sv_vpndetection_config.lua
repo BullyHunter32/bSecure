@@ -18,9 +18,9 @@ bSecure.VPN.Config["APIKey"] = ""
 
     Services:
     1 - ipqualityscore.com
-    2 - 
+    2 - proxycheck.io/
 --]]-------------------------------------
-bSecure.VPN.Config["PreferredService"] = 1
+bSecure.VPN.Config["PreferredService"] = 2
 
 
 --[[-------------------------------------
@@ -52,7 +52,7 @@ bSecure.VPN.Config["AlertOnlySuperadmins"] = true
     with a VPN they will be kicked
     for the reason provided below
 --]]-------------------------------------
-bSecure.VPN.Config["ShouldKick"] = false
+bSecure.VPN.Config["ShouldKick"] = true
 
 --[[-------------------------------------
     Name: Kick message
@@ -60,4 +60,4 @@ bSecure.VPN.Config["ShouldKick"] = false
     Description: The reason they see
     for getting kicked 
 --]]-------------------------------------
-bSecure.VPN.Config["KickReason"] = "Kicked for connecting with a VPN"
+bSecure.VPN.Config["KickReason"] = "Kicked for connecting with a VPN."
