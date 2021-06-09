@@ -52,7 +52,7 @@ bSecure.VPN.Config["AlertOnlySuperadmins"] = true
     with a VPN they will be kicked
     for the reason provided below
 --]]-------------------------------------
-bSecure.VPN.Config["ShouldKick"] = true
+bSecure.VPN.Config["ShouldKick"] = false
 
 --[[-------------------------------------
     Name: Kick message
@@ -60,4 +60,4 @@ bSecure.VPN.Config["ShouldKick"] = true
     Description: The reason they see
     for getting kicked 
 --]]-------------------------------------
-bSecure.VPN.Config["KickReason"] = "Kicked for connecting with a VPN."
+bSecure.VPN.Config["KickReason"] = "Kicked for connecting with a VPN"
