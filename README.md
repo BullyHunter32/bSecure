@@ -23,5 +23,6 @@ The features this currently has at the time of writing this are the following:
 - Anti Backdoor. Detects some stuff here and there
 - Extremely optimised screengrabber in exchange for reliability
 - AntiBHop
+- Detects fucky angles
 
 ... and there are more to come :)
