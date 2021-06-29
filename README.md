@@ -13,7 +13,6 @@ The features this currently has at the time of writing this are the following:
 - Detects and prevents malicious chat (i.e 'nigger')
 - Anti Exploit
 - Some anticheat precautions
-- Key logger
 - Logging system. Not made to replace a real logging system.
 - Restrict people from certain countries from joining, such as french people.
 - In game menu
