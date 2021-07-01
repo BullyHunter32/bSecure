@@ -15,7 +15,7 @@ The features this currently has at the time of writing this are the following:
 - Some anticheat precautions
 - Logging system. Not made to replace a real logging system.
 - Restrict people from certain countries from joining, such as french people.
-- In game menu
+- In game menu  (bsecure_menu in console)
 - Detection data logging, if you're unclear or need guidance on understanding what the logs mean then contact me on discord (BullyHunter#2252).
 - Anti net message spam
 - VAC ban/game ban limitations (stops players with x or more vac/game bans from playing)
