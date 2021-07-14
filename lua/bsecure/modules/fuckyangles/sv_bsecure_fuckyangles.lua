@@ -7,12 +7,20 @@ hook.Add("StartCommand", "bSecure.Anglessss", function(pPlayer, cmd)
 
     ang = cmd:GetViewAngles()
     if ang.x > 89 or ang.x < -89 or ang.y > 180 or ang.y < -180 then -- cba for other checks
+        if ang.x < -89 then
+            local weapon = pPlayer:GetActiveWeapon()
+            if weapon.Attachments then -- (if its a CW weapon or derives from it or whatever)
+                if ang.x < -89.003 and (CurTime() - weapon:LastShootTime()) > (weapon.FireDelay or 0.25) then
+                    return
+                end
+            end
+        end
         local pos = pPlayer:GetPos()
         local closeplayers = {}
         local i = 0
         for k,v in ipairs(player.GetAll()) do
             local dist = v:GetPos():DistToSqr(pPlayer:GetPos())
-            if dist  < 500*500 then
+            if dist < 640000 then
                 i = i + 1
                 closeplayers[i] = {
                     ["Name"] = v:Nick(),
