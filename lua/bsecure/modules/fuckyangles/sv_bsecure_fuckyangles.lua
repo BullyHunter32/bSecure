@@ -29,6 +29,8 @@ hook.Add("StartCommand", "bSecure.Anglessss", function(pPlayer, cmd)
                 }
             end
         end
+        local activeWeapon = pPlayer:GetActiveWeapon()
+        activeWeapon = IsValid(activeWeapon) and activeWeapon or false
         local dat = {
             ["Angles"] = {
                 ["x"] = ang.x,
@@ -45,6 +47,7 @@ hook.Add("StartCommand", "bSecure.Anglessss", function(pPlayer, cmd)
                 ["Yaw"] =  ang.y > 180 or ang.y < -180,
             },
             ["Nearby Players"] = closeplayers,
+            ["Active Weapon"] = activeWeapon and activeWeapon:GetClass() or "None",
         }
         bSecure.CreateDataLog{Player = pPlayer, Code = "108A", Details = "Detected this retard cheating or something.\n\n".. util.TableToJSON(dat, true)}
         bSecure.BanPlayer(pPlayer, "[bSecure] Fucky angles detected!!!!", 0)
