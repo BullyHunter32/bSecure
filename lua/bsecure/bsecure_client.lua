@@ -30,7 +30,7 @@ end
 
 function bSecure.Ban(pPlayer) -- Admin mod compatability
     if ULib then
-        RunConsoleCommand("ulx","ban","\""..pPlayer:SteamID().."\"")
+        RunConsoleCommand("ulx","banid","\""..pPlayer:SteamID().."\"")
     elseif serverguard then
         RunConsoleCommand("sg","ban","\""..pPlayer:SteamID().."\"")
     elseif FAdmin then
@@ -40,7 +40,7 @@ end
 
 function bSecure.Kick(pPlayer)
     if ULib then
-        RunConsoleCommand("ulx","kick","\""..pPlayer:SteamID().."\"")
+        RunConsoleCommand("ulx","kick","\""..pPlayer:Nick().."\"")
     elseif serverguard then
         RunConsoleCommand("sg","kick","\""..pPlayer:SteamID().."\"")
     elseif FAdmin then
@@ -50,7 +50,7 @@ end
 
 function bSecure.Jail(pPlayer) -- Admin mod compatability
     if ULib then
-        RunConsoleCommand("ulx","jail","\""..pPlayer:SteamID().."\"")
+        RunConsoleCommand("ulx","jail","\""..pPlayer:Nick().."\"")
     elseif serverguard then
         RunConsoleCommand("sg","jail","\""..pPlayer:SteamID().."\"")
     elseif FAdmin then
@@ -61,7 +61,7 @@ end
 
 function bSecure.Goto(pPlayer) -- Admin mod compatability
     if ULib then
-        RunConsoleCommand("ulx","goto","\""..pPlayer:SteamID().."\"")
+        RunConsoleCommand("ulx","goto","\""..pPlayer:Nick().."\"")
     elseif serverguard then
         RunConsoleCommand("sg","goto","\""..pPlayer:SteamID().."\"")
     elseif FAdmin then
@@ -71,7 +71,7 @@ end
 
 function bSecure.Bring(pPlayer) -- Admin mod compatability
     if ULib then
-        RunConsoleCommand("ulx","bring","\""..pPlayer:SteamID().."\"")
+        RunConsoleCommand("ulx","bring","\""..pPlayer:Nick().."\"")
     elseif serverguard then
         RunConsoleCommand("sg","bring","\""..pPlayer:SteamID().."\"")
     elseif FAdmin then
