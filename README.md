@@ -2,6 +2,9 @@
 
 The idea behind bSecure was to be a free, open source addon revolved around the idea of server security. I wanted this to be free and open source because there are little to no public security type addons because the majority of them are on gmodstore unavaliable for everyone.
 
+Content pack including all resources:
+https://steamcommunity.com/sharedfiles/filedetails/?id=2562066188
+
 The features this currently has at the time of writing this are the following:
 - VPN Detection
 - Family share alt detection
