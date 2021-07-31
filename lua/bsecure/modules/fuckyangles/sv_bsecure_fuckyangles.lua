@@ -4,7 +4,12 @@ hook.Add("StartCommand", "bSecure.Anglessss", function(pPlayer, cmd)
     if blocked[pPlayer] then
         return
     end
-
+    
+    if pPlayer:IsBot() then
+        blocked[pPlayer] = true
+        return
+    end
+        
     ang = cmd:GetViewAngles()
     if ang.x > 89 or ang.x < -89 or ang.y > 180 or ang.y < -180 then -- cba for other checks
         if ang.x < -89 then
