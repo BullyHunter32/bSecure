@@ -1,0 +1,13 @@
+{
+    "error" : "Error",
+    "detection" : "Detección",
+    "opening_menu" : "Abrir menú...",
+
+    "screengrab_detour_detected" : "Funciones de captura de pantalla desviadas detectadas!",
+    "skid_detection" : "{{ player_name }} puede estar pirateando. Fuentes - {{ sources }}",
+    "player_connected_vpn" : "{{ player_name }} Se ha conectado con un vpn!",
+    "player_connected_no_vpn" : "{{ player_name }} se ha conectado sin vpn.",
+    "detected_ip_vpn" : "{{ ip_address }} es un vpn.",
+    "ip_no_vpn" : "{{ ip_address }} no es un vpn.",
+    "allowcslua_enabled_reminder" : "sv_allowcslua ¡está habilitado! Esto permite a los jugadores ejecutar scripts maliciosos como hacks o exploits en su servidor."
+}
