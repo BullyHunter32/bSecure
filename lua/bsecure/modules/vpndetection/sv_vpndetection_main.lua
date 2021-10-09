@@ -1,5 +1,6 @@
 local urls = {
-    {"https://ipqualityscore.com/api/json/ip/%s/%s", "Key", "IP"},
+    {"http://check.getipintel.net/check.php?ip=%s&contact=%s","IP","Email"}
+	{"https://ipqualityscore.com/api/json/ip/%s/%s", "Key", "IP"},
     {"https://proxycheck.io/v2/%s?vpn=1&asn=1", "IP"}
 }
 function bSecure.VPN.FormatURL(IPAddress)
@@ -11,6 +12,8 @@ function bSecure.VPN.FormatURL(IPAddress)
             url = url:format(bSecure.VPN.Config.APIKey, "%s", "%s", "%s")
         elseif f == "IP" then
             url = url:format(IPAddress, "%s", "%s", "%s")
+        elseif f == "Email" then
+            url = url:format(IPAddress, bSecure.VPN.Config.Email)
         end
     end
 
@@ -99,7 +102,31 @@ function bSecure.CheckVPN(Data)
                     bSecure.Print(bSecure:GetPhrase("ip_no_vpn", {["ip_address"] = IPAddress}))
                 end
             end
-        end
+        elseif bSecure.VPN.Config["PreferredService"] == 3 then -- getIPIntel, Free plan does NOT support HTTPS protocol without a valid EMAIL!
+            if body == "1" then -- site only returns a 1/0 non JSON value for vpn checking.
+                hook.Run("bSecure.OnVPNDetected", pPlayer, IPAddress)
+                bSecure.CreateDataLog{Player = pPlayer, Code = "104A", Details = "The suspect has connected with a VPN at ".. IPAddress.. ". More information can be found here, ".. bSecure.VPN.FormatURL(IPAddress)}
+                if bSecure.isPlayer(Data) then
+                    bSecure.PrintDetection(bSecure:GetPhrase("player_connected_vpn", {["player_name"] = bSecure.FormatPlayer(Data)}))
+
+                    if bSecure.VPN.Config.ShouldAlertAdmins then
+                        bSecure.AlertAdmins(bSecure:GetPhrase("player_connected_vpn", {["player_name"] = bSecure.FormatPlayer(Data)}), bSecure.VPN.Config.AlertOnlySuperadmins)
+                    end
+
+                    if bSecure.VPN.Config.ShouldKick then
+                        Data:Kick(bSecure.VPN.Config.KickReason)
+                    end
+                else
+                    bSecure.PrintDetection(bSecure:GetPhrase("detected_ip_vpn", {["ip_address"] = IPAddress}))
+                end
+            else
+                if bSecure.isPlayer(Data) then
+                    bSecure.Print(bSecure:GetPhrase("player_connected_no_vpn", {["player_name"] = bSecure.FormatPlayer(Data)}))
+                else
+                    bSecure.Print(bSecure:GetPhrase("ip_no_vpn", {["ip_address"] = IPAddress}))
+                end
+            end
+		end
     end)
 end
 

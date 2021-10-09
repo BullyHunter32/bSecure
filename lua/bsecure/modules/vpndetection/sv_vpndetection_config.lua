@@ -11,6 +11,15 @@ bSecure.VPN.Config = {}
 bSecure.VPN.Config["APIKey"] = ""
 
 --[[-------------------------------------
+    Name: Email
+
+    Description: Use a valid email for
+    https://www.getipintel.net/. This
+    is used to contact you if you are hitting limits.
+--]]-------------------------------------
+bSecure.VPN.Config["Email"] = ""
+
+--[[-------------------------------------
     Name: Preferred Service
 
     Description: Which VPN detection
@@ -19,6 +28,7 @@ bSecure.VPN.Config["APIKey"] = ""
     Services:
     1 - ipqualityscore.com
     2 - proxycheck.io/
+	3 - getipintel.net/
 --]]-------------------------------------
 bSecure.VPN.Config["PreferredService"] = 2
 
