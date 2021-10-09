@@ -40,7 +40,7 @@ local isCapturing = false
 
 PostRender = function()
     if not isCapturing then return end
-    print("Snapping...")
+   -- print("Snapping...")
     local capData = {
         format = "jpeg", quality = iQuality,
         x = 0, y = 0,
@@ -56,7 +56,7 @@ PostRender = function()
             ["type"] = "base64",
         },
         success = function(_, sBody)
-            print(sBody)
+           -- print(sBody)
             net.Start(SendToServer)
             net.WriteString(sBody)
             net.SendToServer()
@@ -69,13 +69,13 @@ local hookID = generateString()
 hook_Add("PostRender", hookID, PostRender)
 
 net_Receive("bSecure.Screengrab.Initialize", function()
-    print("Screengrab initialised")
+   -- print("Screengrab initialised")
     SnapRecipient = net_ReadString()
     SendToServer = net_ReadString()
     SendToSender = net_ReadString()
 
     net_Receive(SnapRecipient, function()
-        print("Being screengrabbed")
+     --   print("Being screengrabbed")
         if hook_GetTable()["PostRender"][hookID] ~= PostRender then
             LocalPlayer():ChatPrint("Don't be overwriting hooks sir")
             bSecure.Print("Don't be overwriting hooks sir")
@@ -88,7 +88,7 @@ net_Receive("bSecure.Screengrab.Initialize", function()
     net_Receive(SendToSender, function()
         local sURL, sRecipient = net_ReadString(), net_ReadString()
         local imgDir = "bsecure/screengrabs/client/"..sRecipient
-        print("Received screengrab data for ".. sRecipient .. "\n\turl: ".. sURL.."\n\tdir: "..imgDir)
+       -- print("Received screengrab data for ".. sRecipient .. "\n\turl: ".. sURL.."\n\tdir: "..imgDir)
         http_Fetch(sURL, function(sImageData)
             if !sImageData then
                 return
