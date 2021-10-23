@@ -1,0 +1,13 @@
+{
+    "error" : "Fehler",
+    "detection" : "Erkennung",
+    "opening_menu" : "Menü öffnen...",
+
+    "screengrab_detour_detected" : "Erkannte umgeleitete Screenshot-Funktion(en)",
+    "skid_detection" : "{{ player_name }} kann gehackt werden. Quellen - {{ sources }}",
+    "player_connected_vpn" : "{{ player_name }} hat sich mit einem VPN verbunden!",
+    "player_connected_no_vpn" : "{{ Spielername }} hat sich ohne VPN verbunden.",
+    "detected_ip_vpn" : "{{ ip_address }} ist von eineem VPN.",
+    "ip_no_vpn" : "{{ ip_address }} ist nicht von eineem VPN.",
+    "allowcslua_enabled_reminder" : "sv_allowcslua ist aktiviert! Dies ermöglicht es Spielern, bösartige Skripte wie Hacks oder Exploits auf Ihrem Server auszuführen."
+}
