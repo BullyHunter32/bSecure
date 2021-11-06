@@ -1,7 +1,7 @@
 local urls = {
-    {"http://check.getipintel.net/check.php?ip=%s&contact=%s","IP","Email"}
-	{"https://ipqualityscore.com/api/json/ip/%s/%s", "Key", "IP"},
-    {"https://proxycheck.io/v2/%s?vpn=1&asn=1", "IP"}
+    {"https://ipqualityscore.com/api/json/ip/%s/%s", "Key", "IP"},
+    {"https://proxycheck.io/v2/%s?vpn=1&asn=1", "IP"},
+	{"http://check.getipintel.net/check.php?ip=%s&contact=%s","IP","Email"}
 }
 function bSecure.VPN.FormatURL(IPAddress)
     local tUrl = urls[bSecure.VPN.Config["PreferredService"]] or urls[2]
@@ -13,7 +13,7 @@ function bSecure.VPN.FormatURL(IPAddress)
         elseif f == "IP" then
             url = url:format(IPAddress, "%s", "%s", "%s")
         elseif f == "Email" then
-            url = url:format(IPAddress, bSecure.VPN.Config.Email)
+            url = url:format(bSecure.VPN.Config.Email, "%s", "%s", "%s")
         end
     end
 
@@ -61,7 +61,7 @@ function bSecure.CheckVPN(Data)
                 end
             end
             -- IP QUALITY SCORE
-        elseif bSecure.VPN.Config["PreferredService"] == 2 then -- the other one
+        elseif bSecure.VPN.Config["PreferredService"] == 2 then -- proxycheck
             if tData.status ~= "ok" then
                 return bSecure.PrintError("Failed to lookup ", Data..(tData.message and (" [".. tData.message .. "]["..Data.."]") or ""))
             end
