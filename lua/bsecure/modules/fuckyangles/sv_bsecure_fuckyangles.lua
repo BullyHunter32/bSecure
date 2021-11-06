@@ -15,7 +15,7 @@ hook.Add("StartCommand", "bSecure.Anglessss", function(pPlayer, cmd)
         if ang.x < -89 then
             local weapon = pPlayer:GetActiveWeapon()
             if weapon.Attachments then -- (if its a CW weapon or derives from it or whatever)
-                if ang.x < -89.003 and (CurTime() - weapon:LastShootTime()) > (weapon.FireDelay or 0.25) then
+                if ang.x < -89.003 and (CurTime() - weapon:LastShootTime()) > (weapon.FireDelay or 0.25) or (weapon.dt and weapon.dt.BipodDeployed == true) then
                     return
                 end
             end
